@@ -1,0 +1,75 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+class AuctionItem {
+    private String name;
+    private double currentBid;
+    private String currentBidder;
+
+    public AuctionItem(String name, double initialBid) {
+        this.name = name;
+        this.currentBid = initialBid;
+        this.currentBidder = "No bidder yet";
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getCurrentBid() {
+        return currentBid;
+    }
+
+    public String getCurrentBidder() {
+        return currentBidder;
+    }
+
+    public void placeBid(String bidder, double bidAmount) {
+        if (bidAmount > currentBid) {
+            currentBid = bidAmount;
+            currentBidder = bidder;
+            System.out.println("Bid placed successfully!");
+        } else {
+            System.out.println("Bid must be higher than the current bid.");
+        }
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        List<AuctionItem> items = new ArrayList<>();
+        items.add(new AuctionItem("Item 1", 50.0));
+        items.add(new AuctionItem("Item 2", 30.0));
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true) {
+            System.out.println("Available Items:");
+            for (int i = 0; i < items.size(); i++) {
+                System.out.println((i + 1) + ". " + items.get(i).getName() +
+                        " - Current Bid: $" + items.get(i).getCurrentBid() +
+                        " by " + items.get(i).getCurrentBidder());
+            }
+
+            System.out.print("Enter the number of the item you want to bid on (0 to exit): ");
+            int choice = scanner.nextInt();
+
+            if (choice == 0) {
+                break;
+            }
+
+            if (choice > 0 && choice <= items.size()) {
+                AuctionItem selectedItem = items.get(choice - 1);
+                System.out.println("Enter your name: ");
+                String bidder = scanner.next();
+                System.out.println("Enter your bid: $");
+                double bidAmount = scanner.nextDouble();
+
+                selectedItem.placeBid(bidder, bidAmount);
+            } else {
+                System.out.println("Invalid choice. Please try again.");
+            }
+        }
+    }
+}
